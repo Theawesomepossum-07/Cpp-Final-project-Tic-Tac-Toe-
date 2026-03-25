@@ -1,11 +1,11 @@
 #pragma once
-using namespace std;
 
 class input
 {
 private:
-    int cize;
+    int size;
+
 public:
-input(int s - 100);
-int grid(int, int);
-}
+    explicit input(int s = 100);
+    int grid(int mx, int my) const;
+};
