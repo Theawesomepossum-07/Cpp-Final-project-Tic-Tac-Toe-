@@ -1,9 +1,9 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
 
-// Structure to hold 2D coordinates
 struct Point {
     int x;
     int y;
@@ -11,21 +11,19 @@ struct Point {
 
 class UIHandler {
 private:
-    // Window dimensions
     int windowWidth;
     int windowHeight;
+    
+    // NEW: SFML objects to handle the font and text
+    sf::Font font;
+    sf::Text resultText;
 
 public:
-    // Constructor to initialize window size
     UIHandler(int width, int height);
 
-    // Core drawing functions
-    void drawGrid();
-    void drawMarker(int gridIndex, char marker);
-    
-    // Displays the final game result
-    void displayResult(std::string resultMessage);
+    void drawGrid(sf::RenderWindow& window);
+    void drawMarker(sf::RenderWindow& window, int gridIndex, char marker);
+    void displayResult(sf::RenderWindow& window, std::string resultMessage);
 
-    // Translates mouse click coordinates into a grid index (0-8)
     int getSquareFromClick(Point clickPos);
 };
