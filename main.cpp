@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
     // 1. Create a 600x600 window with the title of your game
-    sf::RenderWindow window(sf::VideoMode(600, 600), "Tic-Tac-Toe Visual Test");
+    sf::RenderWindow window(sf::VideoMode(600, 600, sf::VideoMode::getDesktopMode().bitsPerPixel), "Tic Tac Toe Visual Test");
 
     cout << "SFML Window created successfully!\n";
 
