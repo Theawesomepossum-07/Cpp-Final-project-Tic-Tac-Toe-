@@ -1,37 +1,15 @@
 #include "playerinfo.h"
 
-playerinfo::playerinfo(std::string n, char m, int id)
-{
+playerinfo::playerinfo(std::string n, char m, int id) {
     Name = n;
     xoro = m;
     ID = id;
 }
 
-std::string playerinfo::getName() const
-{
-    return Name;
-}
+void playerinfo::setName(std::string n) { Name = n; }
+void playerinfo::setxoro(char m) { xoro = m; }
+void playerinfo::setID(int i) { ID = i; }
 
-char playerinfo::getxoro() const
-{
-    Name =n;
-}
-
-int playerinfo::getID() const
-{
-    ID = i;
-}
-string playerinfo::getName() const 
-{
-    return Name;
-}
-
-char playerinfo::getxoro() const 
-{
-    return xoro;
-}
-
-int playerinfo::getID() const 
-{
-    return ID;
-}
+std::string playerinfo::getName() const { return Name; }
+char playerinfo::getxoro() const { return xoro; }
+int playerinfo::getID() const { return ID; }

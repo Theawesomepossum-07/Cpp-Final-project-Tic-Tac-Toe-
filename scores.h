@@ -12,7 +12,7 @@ scores(int p1, int p2, int t);
 
 void addwin(int);
 void addDraw();
-void adddraw();
+
 
     int getp1win() const;
     int getp2win() const;

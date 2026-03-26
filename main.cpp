@@ -62,7 +62,7 @@ int main() {
                                 gameScore.addwin(2);
                                 cout << p2.getName() << " scored a point!\n";
                             } else if (result == 'D') {
-                                gameScore.adddraw();
+                                gameScore.addDraw();
                                 cout << "Scoreboard updated for a Tie.\n";
                             }
                             

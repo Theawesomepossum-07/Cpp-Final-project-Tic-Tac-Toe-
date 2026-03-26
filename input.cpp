@@ -2,10 +2,10 @@
 
 input::input(int s) : size(s) {}
 
-int input::grid(int mx, int my) const
+int input::grid(int mx, int my) 
 {
-    int column = mx / cize;
-int row = my / cize;
+    int column = mx / size;
+int row = my / size;
 
     if (column < 0 || column > 2 || row < 0 || row > 2)
     {
