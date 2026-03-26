@@ -1,4 +1,5 @@
 #include "scores.h"
+
 #include <iostream>
 
 scores::scores(int p1, int p2, int t)
@@ -9,25 +10,29 @@ scores::scores(int p1, int p2, int t)
 }
 void scores::addwin(int playid)
 {
-    if (playid ==1)
+    if (playid == 1)
     {
         p1win++;
     }
     else
     p2win++;
 }
-void scores::adddraw()
+
+void scores::addDraw()
 {
     tie++;
 }
+
 int scores::getp1win() const
 {
     return p1win;
 }
+
 int scores::getp2win() const
 {
     return p2win;
 }
+
 int scores::gettie() const
 {
     return tie;
@@ -35,7 +40,7 @@ int scores::gettie() const
 
 void scores:: printscore() const 
 {
-cout << "Number of wins for player 1: " << p1win << endl;
-cout << "Number of wins for player 2: " << p2win << endl;
-cout << " NUmber of ties: " << tie << endl;
+    std::cout << "Number of wins for player 1: " << p1win << std::endl;
+    std::cout << "Number of wins for player 2: " << p2win << std::endl;
+    std::cout << "Number of ties: " << tie << std::endl;
 }
