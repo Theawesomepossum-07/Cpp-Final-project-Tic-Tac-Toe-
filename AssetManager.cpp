@@ -2,45 +2,53 @@
 
 using namespace std;
 
-// Constructor: Sets the initial state before any files are loaded
 AssetManager::AssetManager() {
     assetsLoaded = false;
     cout << "AssetManager initialized. Ready to load files.\n";
 }
 
-// Master function that calls the individual loading functions for the required files
 bool AssetManager::loadAllAssets() {
     cout << "[Assets] Starting to load all game resources...\n";
     
-    // Example paths for where the game images and fonts will be stored
+    // Loads the font file that is already in your repository
+    loadFont("font.ttf");
+    
+    // Tries to load images (will just print a safe warning if you haven't made an images folder yet)
     loadTexture("images/board.png", "BoardBackground");
     loadTexture("images/playerX.png", "MarkerX");
     loadTexture("images/playerO.png", "MarkerO");
-    loadFont("fonts/gamefont.ttf");
     
     assetsLoaded = true;
-    cout << "[Assets] All game resources loaded successfully.\n";
+    cout << "[Assets] Loading sequence complete.\n";
     
     return assetsLoaded;
 }
 
-// Handles pulling an image file from the project folder and storing it
 bool AssetManager::loadTexture(string filePath, string assetName) {
-    // TODO: Implement graphics library code to load the image file
-    cout << "[Assets] Loaded texture: " << assetName << " from " << filePath << "\n";
-    return true; 
+    sf::Texture tex;
+    // SFML function to actually load the image file
+    if (tex.loadFromFile(filePath)) {
+        textures[assetName] = tex;
+        cout << "[Assets] Loaded texture: " << assetName << " from " << filePath << "\n";
+        return true; 
+    }
+    cout << "[Assets] Warning: Missing image " << filePath << " (Game will still run using drawn shapes)\n";
+    return false;
 }
 
-// Handles pulling a font file from the project folder for text rendering
 bool AssetManager::loadFont(string filePath) {
-    // TODO: Implement graphics library code to load the font file
-    cout << "[Assets] Loaded font from " << filePath << "\n";
-    return true;
+    // SFML function to actually load the font file
+    if (gameFont.loadFromFile(filePath)) {
+        cout << "[Assets] Loaded font from " << filePath << "\n";
+        return true;
+    }
+    cout << "[Assets] ERROR: Could not find font file at " << filePath << "\n";
+    return false;
 }
 
-// Destroys the loaded assets to prevent memory leaks when the application closes
 void AssetManager::clearAssets() {
-    // TODO: Implement graphics library code to destroy textures and free memory
+    // Clears the map to free up RAM
+    textures.clear();
     assetsLoaded = false;
     cout << "[Assets] All resources cleared from memory.\n";
 }

@@ -2,39 +2,54 @@
 #include <SFML/System.hpp>
 #include <iostream>
 #include <string>
+
+// Include ALL your custom classes
 #include "UiHandler.h"
 #include "GameManager.h"
 #include "playerinfo.h"
 #include "scores.h"
+#include "AssetManager.h"
+#include "MenuScreen.h"
+#include "MoveValidator.h"
 
 using namespace std;
 
 int main() {
-    // Mute SFML's internal error spam (like the joystick warnings)
+    // Mute SFML's internal error spam
     sf::err().rdbuf(NULL);
+
+    // ==========================================
+    // REQUIREMENT 1: Use MenuScreen
+    // ==========================================
+    MenuScreen menu(600, 600);
+    menu.drawTitle();
+    string name1 = menu.promptPlayerName(1);
+    string name2 = menu.promptPlayerName(2);
     
-    // 1. Create the Window and UI
-    sf::RenderWindow window(sf::VideoMode(600, 600, sf::VideoMode::getDesktopMode().bitsPerPixel), "Tic-Tac-Toe: Final Version");
+    // ==========================================
+    // REQUIREMENT 2: Use AssetManager
+    // ==========================================
+    AssetManager assets;
+    assets.loadAllAssets(); // Loads font.ttf and checks for images
+
+    // Initialize Game Objects
+    sf::RenderWindow window(sf::VideoMode(600, 600, sf::VideoMode::getDesktopMode().bitsPerPixel), "Tic-Tac-Toe: Final Integration");
     UIHandler ui(600, 600);
-
-    // 2. Initialize Core Logic and Data tracking
     GameManager game;
-    playerinfo p1("Player 1", 'X', 1);
-    playerinfo p2("Player 2", 'O', 2);
-    scores gameScore(0, 0, 0); // Tracks wins for P1, P2, and Ties
+    MoveValidator validator; // REQUIREMENT 3: Initialize MoveValidator
+    
+    playerinfo p1(name1, 'X', 1);
+    playerinfo p2(name2, 'O', 2);
+    scores gameScore(0, 0, 0);
 
-    cout << "Game started! Scores are active.\n";
+    cout << "\nGame started! Click the board to play.\n";
 
-    // 3. The Main Loop
+    // Main Game Loop
     while (window.isOpen()) {
         sf::Event event;
-        
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-            
-            // Only handle clicks if game isn't currently showing a finished state
+            if (event.type == sf::Event::Closed) window.close();
+
             if (event.type == sf::Event::MouseButtonPressed && !game.isFinished()) {
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     Point clickPos;
@@ -46,46 +61,42 @@ int main() {
                     if (clickedSquare != -1) {
                         int row = clickedSquare / 3;
                         int col = clickedSquare % 3;
-
-                        // Process the turn
+                        
                         game.playTurn(row, col);
 
-                        // --- NEW: SCORE INTEGRATION ---
-                        // Check immediately after turn if that move ended the game
-                        if (game.isFinished()) {
-                            char result = game.getResult(); // 'X', 'O', or 'D'
-                            
-                            if (result == p1.getxoro()) {
-                                gameScore.addwin(1);
-                                cout << p1.getName() << " scored a point!\n";
-                            } else if (result == p2.getxoro()) {
-                                gameScore.addwin(2);
-                                cout << p2.getName() << " scored a point!\n";
-                            } else if (result == 'D') {
-                                gameScore.addDraw();
-                                cout << "Scoreboard updated for a Tie.\n";
-                            }
-                            
-                            // Print the current standings to the terminal
+                        // ==========================================
+                        // REQUIREMENT 3: Use MoveValidator for Logic
+                        // ==========================================
+                        const GameBoard& currentBoard = game.getBoard();
+                        
+                        if (validator.hasWinner(currentBoard, 'X')) {
+                            gameScore.addwin(1);
+                            cout << p1.getName() << " scored a point!\n";
+                            gameScore.printscore();
+                        } 
+                        else if (validator.hasWinner(currentBoard, 'O')) {
+                            gameScore.addwin(2);
+                            cout << p2.getName() << " scored a point!\n";
+                            gameScore.printscore();
+                        } 
+                        else if (validator.isDrawGame(currentBoard)) {
+                            gameScore.addDraw();
+                            cout << "Scoreboard updated for a Tie.\n";
                             gameScore.printscore();
                         }
                     }
                 }
             }
-            
-            // --- OPTIONAL: Press 'R' to reset board after a win ---
+
             if (game.isFinished() && event.type == sf::Event::KeyPressed) {
-                if (event.key.code == sf::Keyboard::R) {
-                    game.reset(); // Assuming GameManager has a reset function
-                }
+                if (event.key.code == sf::Keyboard::R) game.reset();
             }
         }
 
-        // 4. Drawing Logic
+        // Drawing Phase
         window.clear(sf::Color::Black);
         ui.drawGrid(window);
 
-        // 5. Draw the pieces from the board
         const GameBoard& currentBoard = game.getBoard();
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {
@@ -97,26 +108,22 @@ int main() {
             }
         }
 
-        // 6. Draw Victory Screen
         if (game.isFinished()) {
             string winMessage;
-            char res = game.getResult();
-            
-            if (res == 'D') {
-                // Notice the \n right after Tie!
+            if (validator.isDrawGame(currentBoard) && !validator.hasWinner(currentBoard, 'X') && !validator.hasWinner(currentBoard, 'O')) {
                 winMessage = "It's a Tie!\n(Press R to Reset)"; 
             } else {
-                string name = (res == 'X') ? p1.getName() : p2.getName();
-                // Notice the \n right after Wins!
-                winMessage = name + " Wins!\n(Press R to Reset)";
+                string winnerName = validator.hasWinner(currentBoard, 'X') ? p1.getName() : p2.getName();
+                winMessage = winnerName + " Wins!\n(Press R to Reset)";
             }
             ui.displayResult(window, winMessage);
         }
 
-        window.display(); 
+        window.display();
     }
 
-    // FINAL STEP: Print final stats to terminal upon exit
+    assets.clearAssets(); // Clean up memory on exit
+    
     cout << "\n--- FINAL TOURNAMENT RESULTS ---\n";
     gameScore.printscore();
 
