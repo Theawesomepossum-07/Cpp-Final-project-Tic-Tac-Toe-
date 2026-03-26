@@ -17,7 +17,7 @@ private:
 
 public:
     GameManager();
-
+void reset(); // reset the game state
     void newGame(); // start/reset game
     bool playTurn(int row, int col); // process a move
     void changePlayer(); // switch turns

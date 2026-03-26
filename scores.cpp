@@ -1,11 +1,11 @@
 #include "scores.h"
 #include <iostream>
 
-scores::scores(int p1win, int p2win, int tie)
+scores::scores(int p1, int p2, int t)
 {
-p1win =0;
-p2win =0;
-tie =0;
+    p1win = p1;
+    p2win = p2;
+    tie = t;
 }
 void scores::addwin(int playid)
 {
@@ -14,7 +14,7 @@ void scores::addwin(int playid)
         p1win++;
     }
     else
-    p2wins++;
+    p2win++;
 }
 void scores::adddraw()
 {
@@ -22,7 +22,7 @@ void scores::adddraw()
 }
 int scores::getp1win() const
 {
-    retuen p1win;
+    return p1win;
 }
 int scores::getp2win() const
 {
@@ -33,7 +33,7 @@ int scores::gettie() const
     return tie;
 }
 
-void scores:: printscore() Constructor
+void scores:: printscore() const 
 {
 cout << "Number of wins for player 1: " << p1win << endl;
 cout << "Number of wins for player 2: " << p2win << endl;

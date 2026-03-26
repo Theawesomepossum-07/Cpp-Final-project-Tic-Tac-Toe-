@@ -8,14 +8,15 @@ private:
     int p2win;
     int tie;
 public:
-scores();
+scores(int p1, int p2, int t);
 
 void addwin(int);
 void addDraw();
+void adddraw();
 
 int getp1win() const;
 int getp2win() const;
 int gettie() const;
 
 void printscore() const;
-}
+};

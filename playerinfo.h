@@ -9,7 +9,7 @@ private:
     int ID; 
 
 public:
-    playerinfo(){Name = " "; xoro='';ID=0;};
+    playerinfo(){Name = " "; xoro=' ';ID=0;};
     playerinfo(string, char, int);
 
     string getName() const;
@@ -19,4 +19,5 @@ public:
     void setName(string);
     void setMarker(char);
     void setID(int);
+    void setxoro(char m);
 };

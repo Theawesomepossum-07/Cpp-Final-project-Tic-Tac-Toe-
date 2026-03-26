@@ -9,7 +9,7 @@ ID = id;
 }
 void playerinfo::setName(string n)
 {
-    name =n;
+    Name =n;
 }
 void playerinfo::setxoro(char m) 
 { 
@@ -17,5 +17,19 @@ void playerinfo::setxoro(char m)
 }
 void playerinfo::setID(int i) 
 {
-    id = i;
+    ID = i;
+}
+string playerinfo::getName() const 
+{
+    return Name;
+}
+
+char playerinfo::getxoro() const 
+{
+    return xoro;
+}
+
+int playerinfo::getID() const 
+{
+    return ID;
 }

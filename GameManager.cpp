@@ -72,3 +72,9 @@ const GameBoard& GameManager::getBoard() const
 {
     return board;
 }
+void GameManager::reset() {
+    board.clearBoard(); // This calls your GameBoard's clear function
+    finished = false;   // Reset your win/loss flag
+    result = ' ';       // Reset the result character
+    // If you track whose turn it is here, reset that to Player 1 too!
+}
