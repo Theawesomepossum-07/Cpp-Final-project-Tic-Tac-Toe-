@@ -1,84 +1,107 @@
-#include "GameBoard.h"
-//constructor-runs when the object is craated 
+#include "GameBoard.h" // connects this file to the GameBoard class
+
+// constructor
+// this runs automatically when a GameBoard object is created
 GameBoard::GameBoard()
 {
-    clearBoard();
+    clearBoard(); // starts the board as empty
 }
 
-// Reset board to empty spaces
+// this function clears the full board
+// every position becomes an empty space
 void GameBoard::clearBoard()
 {
-    for (int i=0; i<3; i++)
+    // outer loop goes through rows
+    for (int i = 0; i < 3; i++)
     {
+        // inner loop goes through columns
         for (int j = 0; j < 3; j++)
         {
-            grid[i][j]=' ';
+            grid[i][j] = ' '; // put empty space in each cell
         }
     }
 }
 
-// Try to place a move on the board
+// this function tries to place a move on the board
 bool GameBoard::addMove(int row, int col, char mark)
 {
-    // check if input is inside range
+    // this checks if the row or column is outside the board
+    // if yes, the move is not valid
     if (row < 0 || row > 2 || col < 0 || col > 2)
     {
-        return false;
+        return false; // invalid position
     }
 
-    // check if spot already taken
+    // this checks if the spot is already taken
+    // if it is not empty, player cannot place there
     if (grid[row][col] != ' ')
     {
-        return false;
+        return false; // spot already used
     }
 
-    // place the mark
+    // if the spot is valid and empty, place the mark
     grid[row][col] = mark;
-    return true;
+
+    return true; // move worked
 }
 
-// Check if a cell is empty
+// this checks if one cell is empty
 bool GameBoard::isSpotFree(int row, int col) const
 {
+    // returns true if cell has empty space
+    // returns false if cell has X or O
     return grid[row][col] == ' ';
 }
 
-// Get value at a position
+// this returns the value at one location
 char GameBoard::getValue(int row, int col) const
 {
+    // gives back what is in that cell
     return grid[row][col];
 }
 
+// this checks the board for win or draw
 char GameBoard::checkWin()
 {
-    // 1. Check Rows
+    // 1. check all rows
+    // if all 3 values in a row match and are not empty, someone won
     for (int i = 0; i < 3; i++) {
         if (grid[i][0] != ' ' && grid[i][0] == grid[i][1] && grid[i][1] == grid[i][2])
-            return grid[i][0];
+            return grid[i][0]; // return X or O
     }
 
-    // 2. Check Columns
+    // 2. check all columns
+    // if all 3 values in a column match and are not empty, someone won
     for (int j = 0; j < 3; j++) {
         if (grid[0][j] != ' ' && grid[0][j] == grid[1][j] && grid[1][j] == grid[2][j])
-            return grid[0][j];
+            return grid[0][j]; // return X or O
     }
 
-    // 3. Check Diagonals
+    // 3. check first diagonal
+    // top left to bottom right
     if (grid[0][0] != ' ' && grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2])
         return grid[0][0];
+
+    // 4. check second diagonal
+    // top right to bottom left
     if (grid[0][2] != ' ' && grid[0][2] == grid[1][1] && grid[1][1] == grid[2][0])
         return grid[0][2];
 
-    // 4. Check for Draw (Board full but no winner)
+    // 5. check if board is full
+    // if board is full and nobody won, then it is a draw
     bool full = true;
+
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            if (grid[i][j] == ' ') full = false;
+            if (grid[i][j] == ' ')
+                full = false; // found an empty space, so game is not draw yet
         }
     }
-    if (full) return 'D'; // 'D' for Draw
 
-    return ' '; // Game still going
+    // if full is still true, no empty spaces are left
+    if (full)
+        return 'D'; // D means draw
+
+    // if no win and no draw, game still continues
+    return ' ';
 }
-
-
