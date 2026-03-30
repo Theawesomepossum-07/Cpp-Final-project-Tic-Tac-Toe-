@@ -1,9 +1,9 @@
-#pragma once 
+#pragma once  // To prevent multiple inclusion
 
-#include <iostream>
-#include <string>
-#include <map>
-#include <SFML/Graphics.hpp>
+#include <iostream> // To follow commands
+#include <string> // To use string
+#include <map> // To store texture 
+#include <SFML/Graphics.hpp> // To use the SFML graphics class
 
 class AssetManager{
 private:
@@ -11,13 +11,13 @@ private:
     // Map to store textures by name, and a Font object
     std::map<std::string, sf::Texture> textures;
     sf::Font gameFont;
-
+// All the required data type are defined
 public:
-    AssetManager();
+    AssetManager(); // Constructor
 
     bool loadAllAssets();
     bool loadTexture(std::string filePath, std::string assetName);
     bool loadFont(std::string filePath);
-
-    void clearAssets();
+// All the bool function are defined
+    void clearAssets(); // Created to clear
 };
