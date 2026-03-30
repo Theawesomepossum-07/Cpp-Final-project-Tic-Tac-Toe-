@@ -1,23 +1,21 @@
 #pragma once
-
-#include <iostream>
-#include <string>
+// To prevent multiple inclusion
+#include <iostream> // To follow commands
+#include <string> // To use string
 
 class MenuScreen {
 private:
     //window dimensions for centering text
     int windowWidth;
     int windowHeight;
-
+// Defined to set the game in the center
 public:
-    //constructor to initialize window size
-    MenuScreen(int width, int height);
+    MenuScreen(int width, int height); // Constructor
 
-    void drawTitle();
-
+    void drawTitle(); 
     void drawStartButton();
-
+// To display the tile and start of the game
     std::string promptPlayerName(int playerNumber);
-
-    bool isStartButtonClicked(int mouseX, int mouseY);
+// For playername
+    bool isStartButtonClicked(int mouseX, int mouseY); // To start the game
 };
