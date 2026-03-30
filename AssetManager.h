@@ -19,5 +19,5 @@ public:
     bool loadTexture(std::string filePath, std::string assetName);
     bool loadFont(std::string filePath);
 // All the bool function are defined
-    void clearAssets(); // Created to clear
+    void clearAssets(); // Created to clear memory
 };
